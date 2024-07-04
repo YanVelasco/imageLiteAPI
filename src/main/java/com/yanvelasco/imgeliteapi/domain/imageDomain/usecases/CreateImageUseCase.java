@@ -23,7 +23,6 @@ public class CreateImageUseCase {
 
     @Transactional
     public ResponseEntity<Object> execute(MultipartFile file, String name, List<String> tags, UriComponentsBuilder uriComponentsBuilder) {
-
         ImageRequestDTO imageRequestDTO = ImageRequestDTO.builder()
                 .file(file)
                 .name(name)
@@ -31,11 +30,7 @@ public class CreateImageUseCase {
                 .build();
 
         try {
-            if (imageRequestDTO.file() != null) {
-                if (imageRequestDTO.file().isEmpty()) {
-                    return ResponseEntity.badRequest().body("File is empty");
-                }
-
+            if (imageRequestDTO.file() != null && !imageRequestDTO.file().isEmpty()) {
                 imageRepository.findByName(imageRequestDTO.name()).ifPresent(imageEntity -> {
                     throw new IllegalArgumentException("Image with name " + imageRequestDTO.name() + " already exists");
                 });
@@ -50,22 +45,21 @@ public class CreateImageUseCase {
 
                 imageRepository.save(imageEntity);
 
-                ImageResponseDTO imageResponseDTO = ImageResponseDTO.builder()
-                        .id(imageEntity.getId())
-                        .name(imageEntity.getName())
-                        .size(imageEntity.getSize())
-                        .extension(imageEntity.getExtension().name())
-                        .tags(imageEntity.getTags())
-                        .file(imageEntity.getFile())
-                        .build();
+               ImageResponseDTO imageResponseDTO = ImageResponseDTO.builder()
+                       .url(uriComponentsBuilder.path("/v1/images/{id}").buildAndExpand(imageEntity.getId()).toUri().toString())
+                       .name(imageEntity.getName())
+                       .size(imageEntity.getSize())
+                       .extension(imageEntity.getExtension().name())
+                       .uploadedAt(imageEntity.getCreatedAt().toLocalDate())
+                       .build();
 
-                return ResponseEntity.created(uriComponentsBuilder.path("/v1/images/{id}").buildAndExpand(imageResponseDTO.id()).toUri()).body(imageResponseDTO);
+                return ResponseEntity.created(uriComponentsBuilder.path("/v1/images/{id}").buildAndExpand(imageEntity.getId()).toUri()).body(imageResponseDTO);
             }
         } catch (IOException e) {
             return ResponseEntity.badRequest().body("Error accessing file: " + e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
-        return ResponseEntity.badRequest().body("Error accessing file");
+        return ResponseEntity.badRequest().body("File is required");
     }
 }
