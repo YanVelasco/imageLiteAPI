@@ -1,6 +1,6 @@
-package com.yanvelasco.imgeliteapi.domain.image.entity;
+package com.yanvelasco.imgeliteapi.domain.imageDomain.entity;
 
-import com.yanvelasco.imgeliteapi.domain.image.enums.ImageExtensionEnum;
+import com.yanvelasco.imgeliteapi.domain.imageDomain.enums.ImageExtensionEnum;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
