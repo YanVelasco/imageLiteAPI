@@ -1,17 +1,16 @@
 package com.yanvelasco.imgeliteapi.domain.imageDomain.controller;
 
 import com.yanvelasco.imgeliteapi.domain.imageDomain.usecases.CreateImageUseCase;
+import com.yanvelasco.imgeliteapi.domain.imageDomain.usecases.GetImageById;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
+import java.util.UUID;
 
 
 @RestController
@@ -21,6 +20,7 @@ import java.util.List;
 public class ImagesController {
 
     private final CreateImageUseCase createImageUseCase;
+    private final GetImageById getImageById;
 
     @PostMapping
     public ResponseEntity<Object> save(
@@ -32,5 +32,10 @@ public class ImagesController {
         var response = createImageUseCase.execute(file, name, tags, uriComponentsBuilder);
 
         return response;
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<byte[]> get(@PathVariable UUID id) {
+        return getImageById.execute(id);
     }
 }

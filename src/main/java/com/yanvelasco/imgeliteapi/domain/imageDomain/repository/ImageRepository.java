@@ -8,4 +8,6 @@ import java.util.UUID;
 
 public interface ImageRepository extends JpaRepository<ImageEntity, UUID> {
     Optional<Object> findByName(String name);
+
+    Optional<ImageEntity> getImageById(UUID id);
 }
