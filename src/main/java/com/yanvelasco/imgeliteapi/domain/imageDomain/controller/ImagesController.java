@@ -1,7 +1,9 @@
 package com.yanvelasco.imgeliteapi.domain.imageDomain.controller;
 
+import com.yanvelasco.imgeliteapi.domain.imageDomain.dto.ImageResponseDTO;
 import com.yanvelasco.imgeliteapi.domain.imageDomain.usecases.CreateImageUseCase;
 import com.yanvelasco.imgeliteapi.domain.imageDomain.usecases.GetImageById;
+import com.yanvelasco.imgeliteapi.domain.imageDomain.usecases.ListAllImagesByExtensionOrQuery;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +23,7 @@ public class ImagesController {
 
     private final CreateImageUseCase createImageUseCase;
     private final GetImageById getImageById;
+    private final ListAllImagesByExtensionOrQuery listAllImagesByExtensionOrQuery;
 
     @PostMapping
     public ResponseEntity<Object> save(
@@ -29,7 +32,8 @@ public class ImagesController {
             @RequestParam("tags") List<String> tags,
             UriComponentsBuilder uriComponentsBuilder
     ) {
-        var response = createImageUseCase.execute(file, name, tags, uriComponentsBuilder);
+        ResponseEntity<Object> response;
+        response = createImageUseCase.execute(file, name, tags, uriComponentsBuilder);
 
         return response;
     }
@@ -37,5 +41,13 @@ public class ImagesController {
     @GetMapping("/{id}")
     public ResponseEntity<byte[]> get(@PathVariable UUID id) {
         return getImageById.execute(id);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ImageResponseDTO>> listAllImagesByExtensionAndQuery(
+            @RequestParam(required = false) String extension,
+            @RequestParam(required = false) String query
+    ) {
+        return listAllImagesByExtensionOrQuery.execute(extension, query);
     }
 }
