@@ -10,9 +10,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
+import java.net.URI;
 import java.util.List;
 import java.util.Objects;
 
@@ -45,13 +47,13 @@ public class CreateImageUseCase {
 
                 imageRepository.save(imageEntity);
 
-               ImageResponseDTO imageResponseDTO = ImageResponseDTO.builder()
-                       .url(uriComponentsBuilder.path("/v1/images/{id}").buildAndExpand(imageEntity.getId()).toUri().toString())
-                       .name(imageEntity.getName())
-                       .size(imageEntity.getSize())
-                       .extension(imageEntity.getExtension().name())
-                       .uploadedAt(imageEntity.getCreatedAt().toLocalDate())
-                       .build();
+                ImageResponseDTO imageResponseDTO = ImageResponseDTO.builder()
+                        .url(String.valueOf(buildURI(imageEntity)))
+                        .name(imageEntity.getName())
+                        .size(imageEntity.getSize())
+                        .extension(imageEntity.getExtension().name())
+                        .uploadedAt(imageEntity.getCreatedAt().toLocalDate())
+                        .build();
 
                 return ResponseEntity.created(uriComponentsBuilder.path("/v1/images/{id}").buildAndExpand(imageEntity.getId()).toUri()).body(imageResponseDTO);
             }
@@ -61,5 +63,10 @@ public class CreateImageUseCase {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
         return ResponseEntity.badRequest().body("File is required");
+    }
+
+    private URI buildURI(ImageEntity image) {
+        String path = "/%s".formatted(image.getId());
+        return ServletUriComponentsBuilder.fromCurrentRequest().path(path).build().toUri();
     }
 }
