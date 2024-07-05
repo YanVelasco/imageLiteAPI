@@ -14,8 +14,6 @@ public interface ImageRepository extends JpaRepository<ImageEntity, UUID>, JpaSp
 
     Optional<Object> findByName(String name);
 
-    Optional<ImageEntity> getImageById(UUID id);
-
     default List<ImageEntity> findByExtensionAndNameOrTagsLike(String extension, String query) {
         return findAll((root, criteriaQuery, criteriaBuilder) -> {
             Predicate predicate = criteriaBuilder.conjunction();
