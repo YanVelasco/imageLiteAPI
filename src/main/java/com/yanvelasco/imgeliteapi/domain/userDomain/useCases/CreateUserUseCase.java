@@ -22,27 +22,31 @@ public class CreateUserUseCase {
 
     @Transactional
     public ResponseEntity<Object> execute(UserRequestDTO userRequestDTO, UriComponentsBuilder uriComponentsBuilder) {
-            var createdUser = UserEntity.builder()
-                    .name(userRequestDTO.name())
-                    .email(userRequestDTO.email())
-                    .password(userRequestDTO.password())
-                    .build();
+            try {
+                var createdUser = UserEntity.builder()
+                        .name(userRequestDTO.name())
+                        .email(userRequestDTO.email())
+                        .password(userRequestDTO.password())
+                        .build();
 
-            userRepository.findByEmail(userRequestDTO.email())
-                    .ifPresent(user -> {
-                        throw new IllegalArgumentException("Email already exists");
-                    });
+                userRepository.findByEmail(userRequestDTO.email())
+                        .ifPresent(user -> {
+                            throw new IllegalArgumentException("User with email " + userRequestDTO.email() + " already exists");
+                        });
 
-            encodePassword(createdUser);
+                encodePassword(createdUser);
 
-            userRepository.save(createdUser);
+                userRepository.save(createdUser);
 
-            var response = UserResponseDTO.builder()
-                    .name(createdUser.getName())
-                    .email(createdUser.getEmail())
-                    .build();
+                var response = UserResponseDTO.builder()
+                        .name(createdUser.getName())
+                        .email(createdUser.getEmail())
+                        .build();
 
-            return ResponseEntity.created(uriComponentsBuilder.path("/v1/users/{id}").buildAndExpand(createdUser.getId()).toUri()).body(response);
+                return ResponseEntity.created(uriComponentsBuilder.path("/v1/users/{id}").buildAndExpand(createdUser.getId()).toUri()).body(response);
+            } catch (Exception e) {
+                return ResponseEntity.badRequest().body(e.getMessage());
+            }
     }
 
     private void encodePassword(UserEntity user) {
