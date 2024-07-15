@@ -1,24 +1,23 @@
 package com.yanvelasco.imgeliteapi.domain.userDomain.controller;
 
 import com.yanvelasco.imgeliteapi.domain.userDomain.dto.UserRequestDTO;
-import com.yanvelasco.imgeliteapi.domain.userDomain.useCases.CreateUserUseCase;
+import com.yanvelasco.imgeliteapi.domain.userDomain.useCases.AuthenticateUserUseCase;
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
-@RequestMapping("/v1/users")
+@RequestMapping("/v1/user/auth")
 @RequiredArgsConstructor
-public class UserController {
-
-    private final CreateUserUseCase createUserUseCase;
+public class AuthUserController {
+    private final AuthenticateUserUseCase authenticateUserUseCase;
 
     @PostMapping
-    public ResponseEntity<Object> save(@RequestBody UserRequestDTO userRequestDTO, UriComponentsBuilder uriComponentsBuilder) {
-        return createUserUseCase.execute(userRequestDTO, uriComponentsBuilder);
+    public ResponseEntity<Object> authenticate(@RequestBody UserRequestDTO userRequestDTO) {
+        return authenticateUserUseCase.authenticate(userRequestDTO.email(), userRequestDTO.password());
     }
 }

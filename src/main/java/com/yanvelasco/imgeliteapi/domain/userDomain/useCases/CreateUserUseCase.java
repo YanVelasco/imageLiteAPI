@@ -19,7 +19,6 @@ public class CreateUserUseCase {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final JWTService jwtService;
 
     @Transactional
     public ResponseEntity<Object> execute(UserRequestDTO userRequestDTO, UriComponentsBuilder uriComponentsBuilder) {
@@ -44,18 +43,6 @@ public class CreateUserUseCase {
                     .build();
 
             return ResponseEntity.created(uriComponentsBuilder.path("/v1/users/{id}").buildAndExpand(createdUser.getId()).toUri()).body(response);
-    }
-
-
-    public AccessToken authenticate(String email, String password) {
-        var user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
-
-        boolean matches = passwordEncoder.matches(password, user.getPassword());
-        if (!matches) {
-            throw new IllegalArgumentException("Invalid password");
-        }
-        return jwtService.generateToken(user);
     }
 
     private void encodePassword(UserEntity user) {
