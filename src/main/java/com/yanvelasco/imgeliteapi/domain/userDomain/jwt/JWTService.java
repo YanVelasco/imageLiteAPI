@@ -6,7 +6,6 @@ import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.Map;
@@ -23,16 +22,16 @@ public class JWTService {
         String token = Jwts.builder()
                 .signWith(secretKeyGenerator.getSecretKey())
                 .setSubject(userEntity.getEmail())
-                .expiration( expiration())
-                .claims(generateTokenClaims(userEntity))
+                .setExpiration(expiration())
+                .addClaims(generateTokenClaims(userEntity))
                 .compact();
 
         return new AccessToken(token);
     }
 
     private Date expiration() {
-        LocalDateTime now = LocalDateTime.now().plusHours(2);
-        return Date.from(now.atZone(ZoneId.systemDefault()).toInstant());
+        Date now = new Date(System.currentTimeMillis());
+        return new Date(now.getTime() + 2 * 60 * 60 * 1000);
     }
 
     private Map<String, Object> generateTokenClaims(UserEntity userEntity){
@@ -41,7 +40,7 @@ public class JWTService {
                 "id", userEntity.getId(),
                 "email", userEntity.getEmail(),
                 "password", userEntity.getPassword(),
-                "createdAt", userEntity.getCreatedAt()
+                "createdAt", Date.from(userEntity.getCreatedAt().atZone(ZoneId.systemDefault()).toInstant())
         );
     }
 }
