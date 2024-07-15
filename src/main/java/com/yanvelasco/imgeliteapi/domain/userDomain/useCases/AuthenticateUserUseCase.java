@@ -1,6 +1,5 @@
 package com.yanvelasco.imgeliteapi.domain.userDomain.useCases;
 
-import com.yanvelasco.imgeliteapi.domain.security.AccessToken;
 import com.yanvelasco.imgeliteapi.domain.userDomain.jwt.JWTService;
 import com.yanvelasco.imgeliteapi.domain.userDomain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
