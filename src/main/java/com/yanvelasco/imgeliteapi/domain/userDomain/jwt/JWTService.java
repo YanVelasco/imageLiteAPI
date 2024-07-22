@@ -2,6 +2,7 @@ package com.yanvelasco.imgeliteapi.domain.userDomain.jwt;
 
 import com.yanvelasco.imgeliteapi.domain.security.AccessToken;
 import com.yanvelasco.imgeliteapi.domain.userDomain.entity.UserEntity;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -34,7 +35,7 @@ public class JWTService {
         return new Date(now.getTime() + 2 * 60 * 60 * 1000);
     }
 
-    private Map<String, Object> generateTokenClaims(UserEntity userEntity){
+    private Map<String, Object> generateTokenClaims(UserEntity userEntity) {
         return Map.of(
                 "name", userEntity.getName(),
                 "id", userEntity.getId(),
@@ -42,5 +43,15 @@ public class JWTService {
                 "password", userEntity.getPassword(),
                 "createdAt", Date.from(userEntity.getCreatedAt().atZone(ZoneId.systemDefault()).toInstant())
         );
+    }
+
+    public String getEmailFromToken(String token) {
+        try {
+            return Jwts.parser().verifyWith(secretKeyGenerator.getSecretKey())
+                    .build().parseSignedClaims(token)
+                    .getPayload().getSubject();
+        } catch (JwtException e) {
+            throw new RuntimeException("Invalid token");
+        }
     }
 }
