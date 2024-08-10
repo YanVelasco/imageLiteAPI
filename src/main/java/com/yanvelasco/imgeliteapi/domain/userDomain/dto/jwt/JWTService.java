@@ -1,4 +1,4 @@
-package com.yanvelasco.imgeliteapi.domain.userDomain.jwt;
+package com.yanvelasco.imgeliteapi.domain.userDomain.dto.jwt;
 
 import com.yanvelasco.imgeliteapi.security.AccessToken;
 import com.yanvelasco.imgeliteapi.domain.userDomain.entity.UserEntity;

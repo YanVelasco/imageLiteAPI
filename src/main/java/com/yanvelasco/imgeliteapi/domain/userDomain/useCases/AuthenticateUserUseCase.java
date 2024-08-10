@@ -1,6 +1,6 @@
 package com.yanvelasco.imgeliteapi.domain.userDomain.useCases;
 
-import com.yanvelasco.imgeliteapi.domain.userDomain.jwt.JWTService;
+import com.yanvelasco.imgeliteapi.domain.userDomain.dto.jwt.JWTService;
 import com.yanvelasco.imgeliteapi.domain.userDomain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

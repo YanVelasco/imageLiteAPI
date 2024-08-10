@@ -1,7 +1,7 @@
 package com.yanvelasco.imgeliteapi.config;
 
 import com.yanvelasco.imgeliteapi.config.userFilter.JwtFilter;
-import com.yanvelasco.imgeliteapi.domain.userDomain.jwt.JWTService;
+import com.yanvelasco.imgeliteapi.domain.userDomain.dto.jwt.JWTService;
 import com.yanvelasco.imgeliteapi.domain.userDomain.repository.UserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

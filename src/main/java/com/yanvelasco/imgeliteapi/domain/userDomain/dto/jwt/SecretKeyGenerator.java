@@ -1,4 +1,4 @@
-package com.yanvelasco.imgeliteapi.domain.userDomain.jwt;
+package com.yanvelasco.imgeliteapi.domain.userDomain.dto.jwt;
 
 import io.jsonwebtoken.Jwts;
 import org.springframework.stereotype.Component;

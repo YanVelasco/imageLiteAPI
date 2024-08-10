@@ -1,7 +1,7 @@
 package com.yanvelasco.imgeliteapi.config.userFilter;
 
 import com.yanvelasco.imgeliteapi.domain.userDomain.entity.UserEntity;
-import com.yanvelasco.imgeliteapi.domain.userDomain.jwt.JWTService;
+import com.yanvelasco.imgeliteapi.domain.userDomain.dto.jwt.JWTService;
 import com.yanvelasco.imgeliteapi.domain.userDomain.repository.UserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -17,7 +17,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.Arrays;
 
 @RequiredArgsConstructor
 @Slf4j
