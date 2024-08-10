@@ -1,10 +1,11 @@
-package com.yanvelasco.imgeliteapi.domain.config;
+package com.yanvelasco.imgeliteapi.config;
 
-import com.yanvelasco.imgeliteapi.domain.config.userFilter.JwtFilter;
+import com.yanvelasco.imgeliteapi.config.userFilter.JwtFilter;
 import com.yanvelasco.imgeliteapi.domain.userDomain.jwt.JWTService;
 import com.yanvelasco.imgeliteapi.domain.userDomain.repository.UserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -37,6 +38,7 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(auth -> {
                             auth.requestMatchers("/v1/users/**").permitAll();
+                            auth.requestMatchers(HttpMethod.GET, "/v1/images/**").permitAll();
                             auth.anyRequest().authenticated();
                         }
                 )

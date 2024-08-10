@@ -1,4 +1,4 @@
-package com.yanvelasco.imgeliteapi.domain.security;
+package com.yanvelasco.imgeliteapi.security;
 
 import lombok.Builder;
 

@@ -1,6 +1,6 @@
 package com.yanvelasco.imgeliteapi.domain.userDomain.jwt;
 
-import com.yanvelasco.imgeliteapi.domain.security.AccessToken;
+import com.yanvelasco.imgeliteapi.security.AccessToken;
 import com.yanvelasco.imgeliteapi.domain.userDomain.entity.UserEntity;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;

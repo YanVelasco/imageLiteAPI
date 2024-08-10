@@ -1,4 +1,4 @@
-package com.yanvelasco.imgeliteapi.domain.config.userFilter;
+package com.yanvelasco.imgeliteapi.config.userFilter;
 
 import com.yanvelasco.imgeliteapi.domain.userDomain.entity.UserEntity;
 import com.yanvelasco.imgeliteapi.domain.userDomain.jwt.JWTService;
