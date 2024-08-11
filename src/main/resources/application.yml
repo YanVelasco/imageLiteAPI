@@ -17,3 +17,12 @@ spring:
     multipart:
       max-file-size: 15MB
       max-request-size: 15MB
+
+#Production
+---
+spring:
+  config:
+    activate:
+      on-profile: production
+  datasource:
+    url: jdbc:postgresql://${POSTGRES_HOST}:5432/imagelite
